@@ -5,6 +5,7 @@ const templateImageCard = document.querySelector('#image');
 const templateImagePopup = document.querySelector('#popup-image');
 const container = document.querySelector('.images');
 
+
 const popup = document.querySelector('.popup');
 const popupContainer = document.querySelector('.popup .content');
 const popupClose = document.querySelector('.popup .action');
@@ -43,7 +44,9 @@ const getPictures = function (page = 1, limit = 10) {
 const getPictureInfo = function (id = 0) {
     showLoader();
     fetch(`https://picsum.photos/id/${id}/info`)
-        .then(function (response) {return response.json()})
+        .then(function (response) {
+            return response.json()
+        })
         .then(function (result) {renderPopupPicture(result)})
 }
 
@@ -62,7 +65,7 @@ const showLoader = function () {
 const hideLoader = function () {
     loaderTimeout = setTimeout(function () {
         loader.style.visibility = 'hidden';
-        loaderTimeout.clearTimeout();
+        // loaderTimeout.clearTimeout();
     }, 700);
 }
 
@@ -91,12 +94,11 @@ const renderPictures = function (list) {
         throw Error(`Pictures not defined. The list length: ${list.length}`);
     }
 
-    const clone = templateImageCard.content.cloneNode(true);
     const fragment = document.createDocumentFragment();
 
     list.forEach(function (element) {
+        const clone = templateImageCard.content.cloneNode(true);
         const link = clone.querySelector('a');
-
         link.href = element.url;
         link.dataset.id = element.id;
 
@@ -170,9 +172,8 @@ const actionHandler = function (evt) {
  */
 const imageHandler = function (evt) {
     evt.preventDefault();
-
     if (evt.target.closest('a')) {
-        getPictureInfo(evt.target.dataset.id);
+        getPictureInfo(evt.target.closest('a').dataset.id);
     }
 }
 
